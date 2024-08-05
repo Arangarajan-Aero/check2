@@ -1,0 +1,27 @@
+name: Restrict Branch Creation
+
+on:
+  create:
+    branches:
+      - '*'
+
+jobs:
+  check-branch-name:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check branch name
+      id: check_branch_name
+      run: |
+        if [[ "${{ github.ref }}" != "refs/heads/test-star" ]]; then
+          echo "::set-output name=delete_branch::true"
+        else
+          echo "::set-output name=delete_branch::false"
+        fi
+
+    - name: Delete branch if not allowed
+      if: steps.check-branch-name.outputs.delete_branch == 'true'
+      run: |
+        git push origin --delete ${{ github.ref#refs/heads/ }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
