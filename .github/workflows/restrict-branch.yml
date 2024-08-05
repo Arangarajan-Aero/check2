@@ -15,13 +15,13 @@ jobs:
       run: |
         branch_name="${GITHUB_REF#refs/heads/}"
         if [[ "$branch_name" != "test-star" ]]; then
-          echo "::set-output name=delete_branch::true"
+          echo "delete_branch=true" >> $GITHUB_ENV
         else
-          echo "::set-output name=delete_branch::false"
+          echo "delete_branch=false" >> $GITHUB_ENV
         fi
 
     - name: Delete branch if not allowed
-      if: steps.check-branch-name.outputs.delete_branch == 'true'
+      if: env.delete_branch == 'true'
       run: |
         branch_name="${GITHUB_REF#refs/heads/}"
         git push origin --delete "$branch_name"
