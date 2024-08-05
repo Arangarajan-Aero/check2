@@ -6,7 +6,8 @@ on:
       - '*'
 
 permissions:
-  contents: write
+  contents: write   # Allows read and write access to the contents of the repository, including branch creation and deletion.
+  delete: write     # Explicitly adds permission to delete branches.
 
 jobs:
   check-branch-name:
