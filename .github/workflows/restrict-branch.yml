@@ -6,13 +6,16 @@ on:
       - '*'
 
 permissions:
-  contents: write
+  contents: write  # Allows read and write access to the repository contents.
 
 jobs:
   check-branch-name:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
     - name: Check branch name
       id: check_branch_name
       run: |
