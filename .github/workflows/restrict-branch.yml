@@ -13,7 +13,8 @@ jobs:
     - name: Check branch name
       id: check_branch_name
       run: |
-        if [[ "${{ github.ref }}" != "refs/heads/test-star" ]]; then
+        branch_name="${GITHUB_REF#refs/heads/}"
+        if [[ "$branch_name" != "test-star" ]]; then
           echo "::set-output name=delete_branch::true"
         else
           echo "::set-output name=delete_branch::false"
@@ -22,6 +23,7 @@ jobs:
     - name: Delete branch if not allowed
       if: steps.check-branch-name.outputs.delete_branch == 'true'
       run: |
-        git push origin --delete ${{ github.ref#refs/heads/ }}
+        branch_name="${GITHUB_REF#refs/heads/}"
+        git push origin --delete "$branch_name"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
