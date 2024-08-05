@@ -6,17 +6,13 @@ on:
       - '*'
 
 permissions:
-  contents: write   # Allows read and write access to the contents of the repository, including branch creation and deletion.
-  delete: write     # Explicitly adds permission to delete branches.
+  contents: write
 
 jobs:
   check-branch-name:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
     - name: Check branch name
       id: check_branch_name
       run: |
